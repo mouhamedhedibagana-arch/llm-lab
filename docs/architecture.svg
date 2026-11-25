@@ -1,0 +1,259 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1060" width="1400" height="1060" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" role="img" aria-labelledby="titre desc">
+  <title id="titre">LLM Lab : comment tout s'assemble</title>
+  <desc id="desc">Préparation hors AWS (fine-tuning, Google Drive, GitHub), instance EC2 avec les conteneurs app et ollama et leurs trois modèles, pipeline CI/CD avec ECR, utilisation depuis le navigateur, et trajet d'une question avec la recherche documentaire.</desc>
+  <defs>
+    <marker id="fl-noir" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#374151"/></marker>
+    <marker id="fl-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#ea580c"/></marker>
+    <marker id="fl-violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#7c3aed"/></marker>
+    <marker id="fl-vert" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#16a34a"/></marker>
+    <style>
+      .t1 { font-size: 26px; font-weight: 700; fill: #111827; }
+      .t2 { font-size: 14px; fill: #4b5563; }
+      .zone { font-size: 17px; font-weight: 700; }
+      .titre { font-size: 14px; font-weight: 700; fill: #111827; }
+      .txt { font-size: 12.5px; fill: #374151; }
+      .petit { font-size: 11.5px; fill: #6b7280; }
+      .code { font-family: Consolas, Menlo, "DejaVu Sans Mono", monospace; font-size: 12px; fill: #1f2937; }
+      .boite { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.2; }
+      .etape { fill: #ffffff; stroke: #c4b5fd; stroke-width: 1.2; }
+    </style>
+  </defs>
+
+  <!-- Fond -->
+  <rect x="0" y="0" width="1400" height="1060" rx="18" fill="#ffffff"/>
+  <text x="40" y="50" class="t1">LLM Lab : comment tout s'assemble</text>
+  <text x="40" y="76" class="t2">Du fine-tuning à la réponse : modèles, images, API et pipeline. « Lab N » indique la fiche où l'élément apparaît.</text>
+
+  <!-- ===== Zone 1 : préparer ===== -->
+  <rect x="30" y="100" width="380" height="660" rx="14" fill="#f5f3ff" stroke="#c4b5fd"/>
+  <text x="50" y="128" class="zone" fill="#5b21b6">1 · Préparer, hors AWS</text>
+
+  <rect x="50" y="145" width="340" height="300" rx="10" class="boite"/>
+  <text x="66" y="170" class="titre">Poste avec carte NVIDIA (guide local)</text>
+  <text x="66" y="188" class="petit">Fine-tuning LoRA de Llama 3.2 3B sur l'école</text>
+  <g>
+    <rect x="66" y="200" width="308" height="36" rx="8" class="etape"/>
+    <text x="78" y="223" class="txt"><tspan class="code">donnees.py</tspan> · 232 exemples, 58 tests</text>
+    <rect x="66" y="248" width="308" height="36" rx="8" class="etape"/>
+    <text x="78" y="271" class="txt"><tspan class="code">entrainer.py</tspan> · adaptateur LoRA, 3 min</text>
+    <rect x="66" y="296" width="308" height="36" rx="8" class="etape"/>
+    <text x="78" y="319" class="txt"><tspan class="code">fusionner.py</tspan> · modèle complet, 6,1 Go</text>
+    <rect x="66" y="344" width="308" height="36" rx="8" class="etape"/>
+    <text x="78" y="367" class="txt"><tspan class="code">convertir.sh</tspan> · GGUF 4 bits, 2 Go</text>
+    <rect x="66" y="392" width="308" height="36" rx="8" class="etape"/>
+    <text x="78" y="415" class="txt"><tspan class="code">evaluer.py</tspan> · rappel 20 % → 87 %</text>
+    <g stroke="#7c3aed" stroke-width="1.6" marker-end="url(#fl-violet)">
+      <line x1="220" y1="236" x2="220" y2="246"/>
+      <line x1="220" y1="284" x2="220" y2="294"/>
+      <line x1="220" y1="332" x2="220" y2="342"/>
+      <line x1="220" y1="380" x2="220" y2="390"/>
+    </g>
+  </g>
+  <line x1="220" y1="445" x2="220" y2="473" stroke="#7c3aed" stroke-width="2" marker-end="url(#fl-violet)"/>
+
+  <rect x="50" y="475" width="340" height="58" rx="10" class="boite" stroke="#a78bfa"/>
+  <text x="66" y="499" class="titre">Google Drive</text>
+  <text x="66" y="519" class="txt"><tspan class="code">eps-assistant-q4_k_m.gguf</tspan> · partagé par lien</text>
+
+  <rect x="50" y="553" width="340" height="104" rx="10" class="boite"/>
+  <text x="66" y="577" class="titre">GitHub · votre dépôt</text>
+  <text x="66" y="598" class="txt"><tspan class="code">app/</tspan> main.py, connaissances.md, index.html</text>
+  <text x="66" y="618" class="txt"><tspan class="code">infra/</tspan> stack.yaml · <tspan class="code">pipeline/</tspan> ci-cd.yml</text>
+  <text x="66" y="638" class="txt"><tspan class="code">finetune/</tspan> · <tspan class="code">tests/</tspan> (12 tests) · <tspan class="code">docs/</tspan></text>
+  <line x1="220" y1="657" x2="220" y2="673" stroke="#ea580c" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#fl-orange)"/>
+
+  <rect x="50" y="675" width="340" height="72" rx="10" class="boite" stroke="#fdba74"/>
+  <text x="66" y="698" class="titre">GitHub Actions · à chaque git push</text>
+  <text x="66" y="717" class="txt"><tspan font-weight="700">test</tspan> : machine de GitHub, sans accès AWS</text>
+  <text x="66" y="736" class="txt"><tspan font-weight="700">deploy</tspan> : exécuteur installé sur l'instance</text>
+
+  <!-- ===== Zone 2 : AWS ===== -->
+  <rect x="430" y="100" width="640" height="660" rx="14" fill="#fff7ed" stroke="#fdba74"/>
+  <text x="450" y="128" class="zone" fill="#9a3412">2 · AWS Academy Learner Lab · us-east-1</text>
+
+  <rect x="450" y="143" width="290" height="58" rx="10" class="boite"/>
+  <text x="466" y="167" class="titre">CloudFormation · pile llm-lab</text>
+  <text x="466" y="187" class="txt">crée l'instance et l'installe (Lab 4)</text>
+
+  <rect x="760" y="143" width="290" height="58" rx="10" class="boite"/>
+  <text x="776" y="167" class="titre">Amazon ECR · dépôt llm-app</text>
+  <text x="776" y="187" class="txt">une image par commit (Lab 3, Lab 5)</text>
+
+  <line x1="595" y1="201" x2="595" y2="219" stroke="#374151" stroke-width="1.8" marker-end="url(#fl-noir)"/>
+
+  <rect x="450" y="220" width="600" height="525" rx="12" fill="#ffffff" fill-opacity="0.55" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="470" y="246" class="titre" font-size="15">Instance EC2 t3.large · Amazon Linux 2023</text>
+  <text x="470" y="264" class="petit">rôle LabRole · port 80 ouvert · Session Manager, sans clé SSH</text>
+
+  <line x1="905" y1="203" x2="905" y2="276" stroke="#ea580c" stroke-width="2" stroke-dasharray="5 4" marker-start="url(#fl-orange)" marker-end="url(#fl-orange)"/>
+  <text x="915" y="244" class="petit" fill="#9a3412">push / pull de l'image</text>
+
+  <rect x="470" y="278" width="560" height="40" rx="8" class="boite" stroke="#fdba74"/>
+  <text x="486" y="303" class="txt"><tspan font-weight="700">Exécuteur GitHub</tspan> · construit l'image, la pousse dans ECR, redéploie (Lab 5)</text>
+
+  <text x="470" y="341" class="petit">Docker Compose · /opt/llm : docker-compose.yml + .env</text>
+
+  <!-- Conteneur ollama -->
+  <rect x="470" y="352" width="250" height="372" rx="10" class="boite" stroke="#9ca3af"/>
+  <text x="486" y="377" class="titre">Conteneur ollama</text>
+  <text x="486" y="395" class="petit">port 11434, interne à l'instance</text>
+  <rect x="486" y="410" width="218" height="54" rx="8" fill="#f3f4f6" stroke="#9ca3af"/>
+  <text x="498" y="433" class="code" font-weight="700">llama3.2:3b</text>
+  <text x="498" y="452" class="petit">modèle d'origine · Lab 1</text>
+  <rect x="486" y="476" width="218" height="54" rx="8" fill="#ede9fe" stroke="#7c3aed"/>
+  <text x="498" y="499" class="code" font-weight="700" fill="#5b21b6">eps-assistant</text>
+  <text x="498" y="518" class="petit">affiné par LoRA · Lab 6</text>
+  <rect x="486" y="542" width="218" height="54" rx="8" fill="#dcfce7" stroke="#16a34a"/>
+  <text x="498" y="565" class="code" font-weight="700" fill="#166534">bge-m3</text>
+  <text x="498" y="584" class="petit">embeddings · Lab 7</text>
+  <text x="486" y="628" class="txt">Volume « ollama » :</text>
+  <text x="486" y="646" class="txt">les modèles restent sur le disque</text>
+  <text x="486" y="664" class="txt">après un redémarrage</text>
+  <text x="486" y="696" class="petit">~3 tokens/s sur 2 vCPU, sans GPU</text>
+
+  <!-- Conteneur app -->
+  <rect x="780" y="352" width="250" height="372" rx="10" class="boite" stroke="#9ca3af"/>
+  <text x="796" y="377" class="titre">Conteneur app</text>
+  <text x="796" y="395" class="petit">image llm-app · FastAPI · port 80</text>
+  <text x="796" y="420" class="code">GET  /</text>
+  <text x="796" y="438" class="code">GET  /api/health</text>
+  <text x="796" y="456" class="code">POST /api/chat</text>
+  <text x="796" y="474" class="code">GET  /api/recherche</text>
+  <line x1="796" y1="490" x2="1014" y2="490" stroke="#e5e7eb"/>
+  <text x="796" y="510" class="titre" fill="#166534">Recherche (RAG) · Lab 7</text>
+  <text x="796" y="529" class="txt">connaissances.md : 53 passages</text>
+  <text x="796" y="547" class="txt">index : 53 vecteurs bge-m3</text>
+  <text x="796" y="565" class="txt">3 passages ≥ 0,45 → prompt</text>
+  <line x1="796" y1="581" x2="1014" y2="581" stroke="#e5e7eb"/>
+  <text x="796" y="601" class="titre">.env · configuration</text>
+  <text x="796" y="621" class="code">MODEL=eps-assistant</text>
+  <text x="796" y="639" class="code">RAG=1</text>
+  <text x="796" y="657" class="code">SYSTEM_PROMPT=…</text>
+  <text x="796" y="675" class="code">ACCESS_CODE=…</text>
+  <text x="796" y="703" class="petit">le pipeline ne change que APP_IMAGE</text>
+
+  <!-- app vers ollama -->
+  <line x1="780" y1="503" x2="706" y2="503" stroke="#374151" stroke-width="1.8" marker-end="url(#fl-noir)"/>
+  <text x="743" y="496" class="petit" text-anchor="middle">chat</text>
+  <line x1="780" y1="569" x2="706" y2="569" stroke="#16a34a" stroke-width="1.8" marker-end="url(#fl-vert)"/>
+  <text x="743" y="562" class="petit" text-anchor="middle" fill="#166534">embed</text>
+
+  <!-- Drive vers eps-assistant -->
+  <line x1="390" y1="503" x2="484" y2="503" stroke="#7c3aed" stroke-width="2" marker-end="url(#fl-violet)"/>
+  <!-- deploy vers l'exécuteur -->
+  <polyline points="390,711 419,711 419,298 468,298" fill="none" stroke="#ea580c" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#fl-orange)"/>
+
+  <!-- ===== Zone 3 : utiliser ===== -->
+  <rect x="1090" y="100" width="280" height="660" rx="14" fill="#eff6ff" stroke="#93c5fd"/>
+  <text x="1110" y="128" class="zone" fill="#1e40af">3 · Utiliser</text>
+
+  <rect x="1105" y="143" width="250" height="180" rx="10" class="boite"/>
+  <text x="1121" y="167" class="titre">Légende</text>
+  <line x1="1121" y1="192" x2="1171" y2="192" stroke="#374151" stroke-width="2" marker-end="url(#fl-noir)"/>
+  <text x="1181" y="196" class="txt">requête, réponse</text>
+  <line x1="1121" y1="222" x2="1171" y2="222" stroke="#ea580c" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#fl-orange)"/>
+  <text x="1181" y="226" class="txt">pipeline CI/CD · Lab 5</text>
+  <line x1="1121" y1="252" x2="1171" y2="252" stroke="#7c3aed" stroke-width="2" marker-end="url(#fl-violet)"/>
+  <text x="1181" y="256" class="txt">modèle affiné · Lab 6</text>
+  <line x1="1121" y1="282" x2="1171" y2="282" stroke="#16a34a" stroke-width="2" marker-end="url(#fl-vert)"/>
+  <text x="1181" y="286" class="txt">recherche (RAG) · Lab 7</text>
+  <text x="1121" y="310" class="petit">cadre pointillé : machine virtuelle</text>
+
+  <rect x="1105" y="352" width="250" height="150" rx="10" class="boite" stroke="#93c5fd"/>
+  <text x="1121" y="377" class="titre">Navigateur</text>
+  <text x="1121" y="399" class="code">http://ec2-….amazonaws.com</text>
+  <text x="1121" y="421" class="txt">code d'accès en haut à droite</text>
+  <text x="1121" y="441" class="txt">réponse affichée au fil de l'eau</text>
+  <text x="1121" y="461" class="txt">« Sources » sous chaque réponse</text>
+  <text x="1121" y="485" class="petit">HTTP sur le port 80, sans HTTPS</text>
+  <line x1="1105" y1="427" x2="1033" y2="427" stroke="#374151" stroke-width="2" marker-end="url(#fl-noir)"/>
+
+  <rect x="1105" y="522" width="250" height="96" rx="10" class="boite"/>
+  <text x="1121" y="547" class="titre">Session Manager, CloudShell</text>
+  <text x="1121" y="568" class="txt">les commandes des fiches,</text>
+  <text x="1121" y="587" class="txt">sans clé SSH ni clé AWS :</text>
+  <text x="1121" y="606" class="txt">les droits viennent de LabRole</text>
+
+  <rect x="1105" y="638" width="250" height="109" rx="10" class="boite"/>
+  <text x="1121" y="663" class="titre">Mesurer et nettoyer · Lab 8</text>
+  <text x="1121" y="684" class="txt">latence seul, puis à trois</text>
+  <text x="1121" y="703" class="txt">coût de 1 000 réponses</text>
+  <text x="1121" y="722" class="txt">suppression de la pile, d'ECR</text>
+  <text x="1121" y="740" class="txt">et de l'exécuteur</text>
+
+  <!-- ===== Trajet d'une question ===== -->
+  <rect x="30" y="780" width="1340" height="262" rx="14" fill="#f0fdf4" stroke="#86efac"/>
+  <text x="50" y="810" class="zone" fill="#166534">Le trajet d'une question, recherche activée (Lab 7)</text>
+
+  <g>
+    <!-- 7 étapes : x = 50 + i*188, largeur 166 -->
+    <rect x="50" y="828" width="166" height="160" rx="10" class="boite" stroke="#86efac"/>
+    <circle cx="74" cy="852" r="13" fill="#16a34a"/><text x="74" y="857" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">1</text>
+    <text x="95" y="857" class="titre">Question</text>
+    <text x="64" y="886" class="txt">Le navigateur envoie</text>
+    <text x="64" y="905" class="txt">la question à</text>
+    <text x="64" y="924" class="code">POST /api/chat</text>
+    <text x="64" y="952" class="petit">« Combien coûte le</text>
+    <text x="64" y="969" class="petit">cycle ingénieur ? »</text>
+
+    <rect x="238" y="828" width="166" height="160" rx="10" class="boite" stroke="#86efac"/>
+    <circle cx="262" cy="852" r="13" fill="#16a34a"/><text x="262" y="857" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">2</text>
+    <text x="283" y="857" class="titre">Contrôle</text>
+    <text x="252" y="886" class="txt">code d'accès vérifié,</text>
+    <text x="252" y="905" class="txt">messages validés,</text>
+    <text x="252" y="924" class="txt">rôle « system »</text>
+    <text x="252" y="943" class="txt">refusé au client</text>
+
+    <rect x="426" y="828" width="166" height="160" rx="10" class="boite" stroke="#86efac"/>
+    <circle cx="450" cy="852" r="13" fill="#16a34a"/><text x="450" y="857" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">3</text>
+    <text x="471" y="857" class="titre">Embedding</text>
+    <text x="440" y="886" class="txt"><tspan class="code">bge-m3</tspan> transforme</text>
+    <text x="440" y="905" class="txt">la question en un</text>
+    <text x="440" y="924" class="txt">vecteur de 1 024</text>
+    <text x="440" y="943" class="txt">nombres</text>
+
+    <rect x="614" y="828" width="166" height="160" rx="10" class="boite" stroke="#86efac"/>
+    <circle cx="638" cy="852" r="13" fill="#16a34a"/><text x="638" y="857" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">4</text>
+    <text x="659" y="857" class="titre">Recherche</text>
+    <text x="628" y="886" class="txt">similarité avec les</text>
+    <text x="628" y="905" class="txt">53 passages ; les 3</text>
+    <text x="628" y="924" class="txt">meilleurs, si ≥ 0,45</text>
+    <text x="628" y="952" class="petit">[24] Frais 2026/2027</text>
+    <text x="628" y="969" class="petit">similarité 0,72</text>
+
+    <rect x="802" y="828" width="166" height="160" rx="10" class="boite" stroke="#86efac"/>
+    <circle cx="826" cy="852" r="13" fill="#16a34a"/><text x="826" y="857" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">5</text>
+    <text x="847" y="857" class="titre">Prompt</text>
+    <text x="816" y="886" class="txt">consigne système</text>
+    <text x="816" y="905" class="txt">+ passages trouvés</text>
+    <text x="816" y="924" class="txt">+ question</text>
+    <text x="816" y="952" class="petit">« réponds à partir de</text>
+    <text x="816" y="969" class="petit">ces informations »</text>
+
+    <rect x="990" y="828" width="166" height="160" rx="10" class="boite" stroke="#c4b5fd"/>
+    <circle cx="1014" cy="852" r="13" fill="#7c3aed"/><text x="1014" y="857" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">6</text>
+    <text x="1035" y="857" class="titre">Génération</text>
+    <text x="1004" y="886" class="txt"><tspan class="code">eps-assistant</tspan></text>
+    <text x="1004" y="905" class="txt">écrit la réponse,</text>
+    <text x="1004" y="924" class="txt">~3 tokens/s</text>
+    <text x="1004" y="943" class="txt">sur t3.large</text>
+
+    <rect x="1178" y="828" width="172" height="160" rx="10" class="boite" stroke="#93c5fd"/>
+    <circle cx="1202" cy="852" r="13" fill="#2563eb"/><text x="1202" y="857" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">7</text>
+    <text x="1223" y="857" class="titre">Réponse</text>
+    <text x="1192" y="886" class="txt">texte en flux</text>
+    <text x="1192" y="905" class="txt">+ en-tête X-Sources</text>
+    <text x="1192" y="924" class="txt">→ « Sources : [24] »</text>
+    <text x="1192" y="943" class="txt">sous la réponse</text>
+
+    <g stroke="#16a34a" stroke-width="2" marker-end="url(#fl-vert)">
+      <line x1="216" y1="908" x2="236" y2="908"/>
+      <line x1="404" y1="908" x2="424" y2="908"/>
+      <line x1="592" y1="908" x2="612" y2="908"/>
+      <line x1="780" y1="908" x2="800" y2="908"/>
+      <line x1="968" y1="908" x2="988" y2="908"/>
+      <line x1="1156" y1="908" x2="1176" y2="908"/>
+    </g>
+  </g>
+  <text x="50" y="1018" class="txt">Sans recherche (<tspan class="code">RAG=0</tspan>), les étapes 3 à 5 disparaissent : le modèle ne répond qu'avec ce qu'il a appris. Modifier <tspan class="code">connaissances.md</tspan> puis faire un <tspan class="code">git push</tspan> suffit à mettre à jour les étapes 3 et 4, sans réentraîner.</text>
+</svg>
